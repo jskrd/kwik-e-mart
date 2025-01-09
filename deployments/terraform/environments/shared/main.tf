@@ -1,3 +1,3 @@
-module "registry" {
-  source = "../../modules/registry"
+module "ecr_repository" {
+  source = "../../modules/ecr-repository"
 }
