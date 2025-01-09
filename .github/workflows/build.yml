@@ -5,7 +5,7 @@ on:
 
 env:
   AWS_REGION: eu-west-1
-  ECR_REPOSITORY: laravel-aws-ecs/app
+  ECR_REPOSITORY: kwik-e-mart/app
 
 jobs:
   build:

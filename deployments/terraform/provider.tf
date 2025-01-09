@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = "laravel-aws-ecs-terraform-state"
+  bucket = "kwik-e-mart-terraform-state"
 }
 
 resource "aws_s3_bucket_versioning" "terraform_state_versioning" {
@@ -15,7 +15,7 @@ resource "aws_dynamodb_table" "terraform_state_lock" {
     type = "S"
   }
   hash_key     = "LockID"
-  name         = "laravel-aws-ecs-terraform-state-lock"
+  name         = "kwik-e-mart-terraform-state-lock"
   billing_mode = "PAY_PER_REQUEST"
 }
 
@@ -28,10 +28,10 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "laravel-aws-ecs-terraform-state"
+    bucket         = "kwik-e-mart-terraform-state"
     key            = "terraform.tfstate"
     region         = "eu-west-1"
-    dynamodb_table = "laravel-aws-ecs-terraform-state-lock"
+    dynamodb_table = "kwik-e-mart-terraform-state-lock"
     encrypt        = true
   }
 }
