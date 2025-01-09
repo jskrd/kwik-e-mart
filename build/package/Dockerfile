@@ -1,7 +1,9 @@
 FROM php:8.4-fpm-alpine AS base
-RUN apk add --no-cache --virtual .build-deps postgresql-dev && \
+RUN apk add --no-cache linux-headers postgresql-dev $PHPIZE_DEPS && \
     docker-php-ext-install pdo_pgsql && \
-    apk del .build-deps
+    pecl install redis && \
+    docker-php-ext-enable redis && \
+    apk del $PHPIZE_DEPS
 RUN apk add --no-cache nginx postgresql-dev supervisor
 COPY build/package/nginx.conf /etc/nginx/http.d/default.conf
 COPY build/package/supervisor.conf /etc/supervisord.conf
