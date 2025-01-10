@@ -1,3 +1,7 @@
+variable "branch_name" {
+  type = string
+}
+
 variable "ecr_repository_url" {
   type = string
 }
