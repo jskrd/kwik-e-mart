@@ -1,4 +1,4 @@
-bootstrap/cache/
+bootstrap/cache/*
 deployments/
 docker-compose*.yml
 Dockerfile
