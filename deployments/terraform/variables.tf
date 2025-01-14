@@ -1,3 +1,3 @@
-variable "branch_names" {
-  type = list(string)
+variable "branches" {
+  type = set(string)
 }
