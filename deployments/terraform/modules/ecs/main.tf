@@ -104,9 +104,8 @@ resource "aws_ecs_service" "web" {
   launch_type     = "FARGATE"
 
   network_configuration {
-    subnets          = var.private_subnet_ids
-    security_groups  = [aws_security_group.ecs_tasks.id]
-    assign_public_ip = false
+    subnets         = var.private_subnet_ids
+    security_groups = [aws_security_group.ecs_tasks.id]
   }
 
   load_balancer {
@@ -126,9 +125,8 @@ resource "aws_ecs_service" "worker" {
   launch_type     = "FARGATE"
 
   network_configuration {
-    subnets          = var.private_subnet_ids
-    security_groups  = [aws_security_group.ecs_tasks.id]
-    assign_public_ip = false
+    subnets         = var.private_subnet_ids
+    security_groups = [aws_security_group.ecs_tasks.id]
   }
 }
 
@@ -142,8 +140,7 @@ resource "aws_ecs_service" "scheduler" {
   launch_type     = "FARGATE"
 
   network_configuration {
-    subnets          = var.private_subnet_ids
-    security_groups  = [aws_security_group.ecs_tasks.id]
-    assign_public_ip = false
+    subnets         = var.private_subnet_ids
+    security_groups = [aws_security_group.ecs_tasks.id]
   }
 }
