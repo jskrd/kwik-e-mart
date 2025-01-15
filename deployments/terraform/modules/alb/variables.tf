@@ -18,6 +18,10 @@ variable "public_subnet_ids" {
   type = set(string)
 }
 
+variable "route53_zone_id" {
+  type = string
+}
+
 variable "route53_zone_name" {
   type = string
 }

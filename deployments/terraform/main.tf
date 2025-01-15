@@ -33,6 +33,7 @@ module "alb" {
   environment       = each.key
   project_name      = local.project_name
   public_subnet_ids = module.vpc[each.key].public_subnet_ids
+  route53_zone_id   = module.route53.zone_id
   route53_zone_name = module.route53.zone_name
   vpc_id            = module.vpc[each.key].id
 }
