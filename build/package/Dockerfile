@@ -27,7 +27,8 @@ WORKDIR /srv/www
 COPY . ./
 COPY --from=composer-packages /app/vendor ./vendor
 COPY --from=static-assets /app/public/build ./public/build
-RUN php artisan optimize
+COPY build/package/start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
 RUN chown -R www-data:www-data bootstrap/cache storage
 EXPOSE 8000
-CMD ["supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["/usr/local/bin/start.sh"]
