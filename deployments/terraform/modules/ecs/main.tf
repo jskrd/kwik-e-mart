@@ -1,3 +1,16 @@
+locals {
+  dummy_environment = [
+    {
+      name  = "APP_KEY"
+      value = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+    },
+    {
+      name  = "SESSION_DRIVER"
+      value = "array"
+    }
+  ]
+}
+
 resource "aws_ecs_cluster" "main" {
   name = "${var.project_name}-${var.environment}"
 }
@@ -28,6 +41,7 @@ resource "aws_ecs_task_definition" "web" {
           protocol      = "tcp"
         }
       ]
+      environment = local.dummy_environment
     }
   ])
   requires_compatibilities = ["FARGATE"]
@@ -43,9 +57,10 @@ resource "aws_ecs_task_definition" "worker" {
   family = "${var.project_name}-${each.value}-worker"
   container_definitions = jsonencode([
     {
-      name    = "worker"
-      image   = "${var.ecr_repository_url}:${each.value}"
-      command = ["php", "artisan", "queue:work"]
+      name        = "worker"
+      image       = "${var.ecr_repository_url}:${each.value}"
+      command     = ["php", "artisan", "queue:work"]
+      environment = local.dummy_environment
     }
   ])
   requires_compatibilities = ["FARGATE"]
@@ -61,9 +76,10 @@ resource "aws_ecs_task_definition" "scheduler" {
   family = "${var.project_name}-${each.value}-scheduler"
   container_definitions = jsonencode([
     {
-      name    = "scheduler"
-      image   = "${var.ecr_repository_url}:${each.value}"
-      command = ["php", "artisan", "schedule:work"]
+      name        = "scheduler"
+      image       = "${var.ecr_repository_url}:${each.value}"
+      command     = ["php", "artisan", "schedule:work"]
+      environment = local.dummy_environment
     }
   ])
   requires_compatibilities = ["FARGATE"]
