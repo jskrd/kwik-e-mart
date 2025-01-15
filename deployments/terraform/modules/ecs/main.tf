@@ -5,10 +5,21 @@ locals {
       value = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
     },
     {
+      name  = "LOG_STACK",
+      value = "stderr"
+    },
+    {
       name  = "SESSION_DRIVER"
       value = "array"
     }
   ]
+}
+
+resource "aws_cloudwatch_log_group" "main" {
+  for_each = var.branches
+
+  name              = "/ecs/${var.project_name}-${var.environment}-${each.value}"
+  retention_in_days = 7
 }
 
 resource "aws_ecs_cluster" "main" {
@@ -42,6 +53,14 @@ resource "aws_ecs_task_definition" "web" {
         }
       ]
       environment = local.dummy_environment
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          "awslogs-group"         = "/ecs/${var.project_name}-${var.environment}-${each.value}"
+          "awslogs-region"        = var.region
+          "awslogs-stream-prefix" = "web"
+        }
+      }
     }
   ])
   requires_compatibilities = ["FARGATE"]
@@ -61,6 +80,14 @@ resource "aws_ecs_task_definition" "worker" {
       image       = "${var.ecr_repository_url}:${each.value}"
       command     = ["php", "artisan", "queue:work"]
       environment = local.dummy_environment
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          "awslogs-group"         = "/ecs/${var.project_name}-${var.environment}-${each.value}"
+          "awslogs-region"        = var.region
+          "awslogs-stream-prefix" = "worker"
+        }
+      }
     }
   ])
   requires_compatibilities = ["FARGATE"]
@@ -80,6 +107,14 @@ resource "aws_ecs_task_definition" "scheduler" {
       image       = "${var.ecr_repository_url}:${each.value}"
       command     = ["php", "artisan", "schedule:work"]
       environment = local.dummy_environment
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          "awslogs-group"         = "/ecs/${var.project_name}-${var.environment}-${each.value}"
+          "awslogs-region"        = var.region
+          "awslogs-stream-prefix" = "scheduler"
+        }
+      }
     }
   ])
   requires_compatibilities = ["FARGATE"]

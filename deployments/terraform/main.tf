@@ -61,6 +61,7 @@ module "ecs" {
   environment                 = each.key
   private_subnet_ids          = module.vpc[each.key].private_subnet_ids
   project_name                = local.project_name
+  region                      = local.region
   vpc_id                      = module.vpc[each.key].id
   web_target_group_arn        = module.alb[each.key].web_target_group_arn
 }
