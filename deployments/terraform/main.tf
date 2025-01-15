@@ -17,7 +17,7 @@ module "vpc" {
 
   for_each = local.environments
 
-  availability_zones = local.vpc_availability_zones
+  availability_zones = local.availability_zones[each.key]
   environment        = each.value
   project_name       = local.project_name
   project_octet      = local.project_octet
