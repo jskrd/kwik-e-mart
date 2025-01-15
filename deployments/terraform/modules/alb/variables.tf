@@ -1,4 +1,4 @@
-variable "banches" {
+variable "branches" {
   type = set(string)
 }
 

@@ -69,7 +69,7 @@ resource "aws_lb_listener" "https" {
 }
 
 resource "aws_lb_target_group" "web" {
-  for_each = var.banches
+  for_each = var.branches
 
   name        = "${var.project_name}-${each.value}"
   port        = 8000
@@ -85,7 +85,7 @@ resource "aws_lb_target_group" "web" {
 }
 
 resource "aws_lb_listener_rule" "branch" {
-  for_each = var.banches
+  for_each = var.branches
 
   listener_arn = aws_lb_listener.https.arn
 

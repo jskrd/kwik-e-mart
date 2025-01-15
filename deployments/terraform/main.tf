@@ -28,7 +28,7 @@ module "alb" {
 
   for_each = local.deployments
 
-  banches           = each.value
+  branches          = each.value
   certificate_arn   = module.acm.certificate_arn
   environment       = each.key
   project_name      = local.project_name
@@ -54,7 +54,7 @@ module "ecs" {
 
   for_each = local.deployments
 
-  banches                     = each.value
+  branches                    = each.value
   ecr_repository_url          = module.ecr.repository_url
   ecs_task_execution_role_arn = module.iam.ecs_task_execution_role_arn
   environment                 = each.key

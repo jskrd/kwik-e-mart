@@ -15,7 +15,7 @@ resource "aws_ecs_cluster_capacity_providers" "main" {
 }
 
 resource "aws_ecs_task_definition" "web" {
-  for_each = var.banches
+  for_each = var.branches
 
   family = "${var.project_name}-${each.value}-web"
   container_definitions = jsonencode([
@@ -38,7 +38,7 @@ resource "aws_ecs_task_definition" "web" {
 }
 
 resource "aws_ecs_task_definition" "worker" {
-  for_each = var.banches
+  for_each = var.branches
 
   family = "${var.project_name}-${each.value}-worker"
   container_definitions = jsonencode([
@@ -56,7 +56,7 @@ resource "aws_ecs_task_definition" "worker" {
 }
 
 resource "aws_ecs_task_definition" "scheduler" {
-  for_each = var.banches
+  for_each = var.branches
 
   family = "${var.project_name}-${each.value}-scheduler"
   container_definitions = jsonencode([
@@ -95,7 +95,7 @@ resource "aws_vpc_security_group_egress_rule" "all" {
 }
 
 resource "aws_ecs_service" "web" {
-  for_each = var.banches
+  for_each = var.branches
 
   name            = "${var.project_name}-${each.value}-web"
   cluster         = aws_ecs_cluster.main.arn
@@ -116,7 +116,7 @@ resource "aws_ecs_service" "web" {
 }
 
 resource "aws_ecs_service" "worker" {
-  for_each = var.banches
+  for_each = var.branches
 
   name            = "${var.project_name}-${each.value}-worker"
   cluster         = aws_ecs_cluster.main.arn
@@ -131,7 +131,7 @@ resource "aws_ecs_service" "worker" {
 }
 
 resource "aws_ecs_service" "scheduler" {
-  for_each = var.banches
+  for_each = var.branches
 
   name            = "${var.project_name}-${each.value}-scheduler"
   cluster         = aws_ecs_cluster.main.arn
