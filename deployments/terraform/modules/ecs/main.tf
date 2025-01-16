@@ -2,7 +2,7 @@ locals {
   dummy_environment = [
     {
       name  = "APP_KEY"
-      value = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+      value = "base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
     },
     {
       name  = "LOG_STACK",
