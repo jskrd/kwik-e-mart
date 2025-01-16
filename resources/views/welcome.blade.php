@@ -168,7 +168,7 @@
 
                     <footer class="py-16 space-y-4 text-sm text-center text-black dark:text-white/70">
                         <div>Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})</div>
-                        <div class="font-semibold text-[#FF2D20] dark:text-[#FF2D20]">Host: {{ request()->getHost() }}</div>
+                        <div class="font-semibold text-[#FF2D20] dark:text-[#FF2D20]">Container: {{ gethostname() }}</div>
                     </footer>
                 </div>
             </div>
