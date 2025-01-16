@@ -1,18 +1,28 @@
 locals {
-  dummy_environment = [
-    {
-      name  = "APP_KEY"
-      value = "base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
-    },
-    {
-      name  = "LOG_STACK",
-      value = "stderr"
-    },
-    {
-      name  = "SESSION_DRIVER"
-      value = "array"
-    }
-  ]
+  dummy_environment = {
+    for branch in var.branches : branch => [
+      {
+        name  = "APP_KEY"
+        value = "base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+      },
+      {
+        name  = "APP_URL"
+        value = "https://${branch}.${var.route53_zone_name}"
+      },
+      {
+        name  = "ASSET_URL"
+        value = "https://${branch}.${var.route53_zone_name}"
+      },
+      {
+        name  = "LOG_STACK"
+        value = "stderr"
+      },
+      {
+        name  = "SESSION_DRIVER"
+        value = "array"
+      }
+    ]
+  }
 }
 
 resource "aws_cloudwatch_log_group" "main" {
@@ -52,7 +62,7 @@ resource "aws_ecs_task_definition" "web" {
           protocol      = "tcp"
         }
       ]
-      environment = local.dummy_environment
+      environment = local.dummy_environment[each.value]
       logConfiguration = {
         logDriver = "awslogs"
         options = {
@@ -79,7 +89,7 @@ resource "aws_ecs_task_definition" "worker" {
       name        = "worker"
       image       = "${var.ecr_repository_url}:${each.value}"
       command     = ["php", "artisan", "queue:work"]
-      environment = local.dummy_environment
+      environment = local.dummy_environment[each.value]
       logConfiguration = {
         logDriver = "awslogs"
         options = {
@@ -106,7 +116,7 @@ resource "aws_ecs_task_definition" "scheduler" {
       name        = "scheduler"
       image       = "${var.ecr_repository_url}:${each.value}"
       command     = ["php", "artisan", "schedule:work"]
-      environment = local.dummy_environment
+      environment = local.dummy_environment[each.value]
       logConfiguration = {
         logDriver = "awslogs"
         options = {
